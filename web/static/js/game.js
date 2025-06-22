@@ -1,14 +1,14 @@
-let tileSize = 120;
+let tileSize = 100;
 let tileHeight = 40; // for 3D depth
 let grid = [];
-let cols = 8;
-let rows = 8;
+let cols = 10;
+let rows = 10;
 
 let tileTypes = ["grass", "dry", "path", "water"];
 let hoveredTile = null;
 
 function setup() {
-    var canvas = createCanvas(1000, 700);
+    var canvas = createCanvas(1000, 800);
     canvas.parent('garden-container');
 
     angleMode(DEGREES);
@@ -18,7 +18,7 @@ function setup() {
     for (let x = 0; x < cols; x++) {
         grid[x] = [];
         for (let y = 0; y < rows; y++) {
-            grid[x][y] = random(tileTypes.slice(0, 2)); // only grass
+            grid[x][y] = random(tileTypes.slice(0, 1)); // only grass
         }
     }
 }
@@ -55,14 +55,6 @@ function screenToIso(mx, my) {
         x: floor(isoX),
         y: floor(isoY)
     };
-}
-
-function getHoveredTile() {
-    let { x, y } = screenToIso(mouseX, mouseY);
-    if (x >= 0 && y >= 0 && x < cols && y < rows) {
-        return { x, y };
-    }
-    return null;
 }
 
 function draw3DTile(x, y, type, isHovered) {
@@ -109,61 +101,7 @@ function draw3DTile(x, y, type, isHovered) {
     endShape(CLOSE);
 
     if (type === "water") {
-        const iso = screenToIso(x + width / 2, y + 150);
-        const i = iso.x, j = iso.y;
-
-        const belowMissing = j + 1 >= rows || !grid[i]?.[j + 1];
-        const rightMissing = i + 1 >= cols || !grid[i + 1]?.[j];
-
-        let waterfallDepth = height - (y + tileSize / 2 + tileHeight);
-
-        noStroke();
-        fill(31, 182, 237); // translucent blue
-
-        // Falling front face (downward)
-        if (belowMissing) {
-            beginShape();
-            vertex(0, tileSize / 2 + tileHeight);                             // top center
-            vertex(-tileSize / 2, tileSize / 4 + tileHeight);                // top left
-            vertex(-tileSize / 2, tileSize / 4 + tileHeight + waterfallDepth);
-            vertex(0, tileSize / 2 + tileHeight + waterfallDepth);
-            endShape(CLOSE);
-        }
-
-        // Falling right face
-        if (rightMissing) {
-            beginShape();
-            vertex(0, tileSize / 2 + tileHeight);                              // top center
-            vertex(tileSize / 2, tileSize / 4 + tileHeight);                  // top right
-            vertex(tileSize / 2, tileSize / 4 + tileHeight + waterfallDepth);
-            vertex(0, tileSize / 2 + tileHeight + waterfallDepth);
-            endShape(CLOSE);
-        }
-
-        // --- Animated water stream effect ---
-
-        stroke(52, 228, 247);
-        strokeWeight(2);
-
-        let streamsCount = 4;
-        let speed = 1;
-        let streamLength = 20;
-
-        if (belowMissing) {
-            for (let s = 0; s < streamsCount; s++) {
-                let xPos = map(s, 0, streamsCount - 1, -tileSize / 2 + 4, -4);
-                let yPos = (frameCount * speed + s * 120) % (waterfallDepth + streamLength) - streamLength;
-                line(xPos, tileSize / 4 + tileHeight + yPos, xPos, tileSize / 4 + tileHeight + yPos + streamLength);
-            }
-        }
-
-        if (rightMissing) {
-            for (let s = 0; s < streamsCount; s++) {
-                let xPos = map(s, 0, streamsCount - 1, 4, tileSize / 2 - 4);
-                let yPos = (frameCount * speed + s * 40) % (waterfallDepth + streamLength) - streamLength;
-                line(xPos, tileSize / 4 + tileHeight + yPos, xPos, tileSize / 4 + tileHeight + yPos + streamLength);
-            }
-        }
+        drawWaterfall(x, y)
     }
 
     pop();
@@ -171,8 +109,8 @@ function draw3DTile(x, y, type, isHovered) {
 
 function getColorForType(type) {
     switch (type) {
-        case "grass": return color(94, 200, 9);
-        case "dry": return color(94, 181, 9);
+        case "grass": return color(0, 154, 23);
+        case "dry": return color(0, 128, 19);
         case "path": return color(183, 194, 178);
         case "water": return color(31, 182, 237);
         default: return color(200);
