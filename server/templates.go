@@ -20,7 +20,7 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 
 	// return template
 	w.Header().Set("Content-Type", "text/html")
-	err := tmpl.Execute(w, map[string]string{"Title": "My Webpage"})
+	err := tmpl.Execute(w, map[string]string{"Owner": "Timo"})
 	if err != nil {
 		http.Error(w, "error rendering template", http.StatusInternalServerError)
 	} else {

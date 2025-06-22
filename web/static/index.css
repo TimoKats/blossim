@@ -1,0 +1,18 @@
+body {
+    margin: 0;
+    padding: 50px;
+    font-family: sans-serif;
+    background-color: #b6d3b6;
+}
+
+#garden-container {
+    width: 1000px;
+    height: 700px;
+    margin: 40px auto;
+    position: relative;
+}
+
+#title {
+    display: grid;
+    place-items: center;
+}

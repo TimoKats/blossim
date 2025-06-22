@@ -3,16 +3,17 @@
 
 <head>
     <title>Blossim</title>
+    <link rel="stylesheet" href="/static/index.css">
     <script src="https://cdn.jsdelivr.net/npm/p5@1.11.8/lib/p5.min.js"></script>
-    <script src="/static/game.js"></script>
 </head>
 
 <body>
-    <h1>{{ .Title }}</h1>
+    <h1 id="title">Garden of {{ .Owner }}</h1>
+    <div id="garden-container"></div>
 </body>
 
 <footer>
-
+    <script src="/static/game.js"></script>
 </footer>
 
 </html>
