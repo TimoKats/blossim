@@ -22,8 +22,8 @@ function drawWaterfall(x, y) {
     // Falling front face (downward)
     if (belowMissing) {
         beginShape();
-        vertex(0, tileSize / 2 + tileHeight);                             // top center
-        vertex(-tileSize / 2, tileSize / 4 + tileHeight);                // top left
+        vertex(0, tileSize / 2 + tileHeight);
+        vertex(-tileSize / 2, tileSize / 4 + tileHeight);
         vertex(-tileSize / 2, tileSize / 4 + tileHeight + waterfallDepth);
         vertex(0, tileSize / 2 + tileHeight + waterfallDepth);
         endShape(CLOSE);
@@ -32,8 +32,8 @@ function drawWaterfall(x, y) {
     // Falling right face
     if (rightMissing) {
         beginShape();
-        vertex(0, tileSize / 2 + tileHeight);                              // top center
-        vertex(tileSize / 2, tileSize / 4 + tileHeight);                  // top right
+        vertex(0, tileSize / 2 + tileHeight);
+        vertex(tileSize / 2, tileSize / 4 + tileHeight);
         vertex(tileSize / 2, tileSize / 4 + tileHeight + waterfallDepth);
         vertex(0, tileSize / 2 + tileHeight + waterfallDepth);
         endShape(CLOSE);
@@ -64,3 +64,21 @@ function drawWaterfall(x, y) {
         }
     }
 }
+
+
+function drawGrass() {
+    console.log("drawing grass")
+    var offsetY = 25;
+    var padding = 25;
+    for (let i = 0; i < 8; i++) {
+        var u = random(-tileSize / 2 + padding, tileSize / 2 - padding);
+        var maxV = map(abs(u), 0, tileSize / 2, tileSize / 4, -padding);
+        var v = random(-maxV, maxV);
+
+        var h = random(2, 6); // blade height
+        stroke(0, 128, 19, 90);
+        strokeWeight(2);
+        line(u, v + offsetY, u, v + offsetY - h);
+    }
+}
+

@@ -18,15 +18,13 @@ function setup() {
     for (let x = 0; x < cols; x++) {
         grid[x] = [];
         for (let y = 0; y < rows; y++) {
-            grid[x][y] = random(tileTypes.slice(0, 1)); // only grass
+            grid[x][y] = random(tileTypes.slice(0, 2)); // only grass
         }
     }
 }
 
 function draw() {
-    // background(220);
     translate(width / 2, 150);
-
     hoveredTile = getHoveredTile();
 
     for (let x = 0; x < cols; x++) {
@@ -35,26 +33,6 @@ function draw() {
             draw3DTile(pos.x, pos.y, grid[x][y], hoveredTile?.x === x && hoveredTile?.y === y);
         }
     }
-}
-
-// Convert grid coords to screen coords (isometric)
-function isoToScreen(x, y) {
-    return {
-        x: (x - y) * tileSize / 2,
-        y: (x + y) * tileSize / 4
-    };
-}
-
-// Convert mouse coords to grid coords
-function screenToIso(mx, my) {
-    let x = mx - width / 2;
-    let y = my - 150;
-    let isoX = (x / (tileSize / 2) + y / (tileSize / 4)) / 2;
-    let isoY = (y / (tileSize / 4) - x / (tileSize / 2)) / 2;
-    return {
-        x: floor(isoX),
-        y: floor(isoY)
-    };
 }
 
 function draw3DTile(x, y, type, isHovered) {
@@ -101,7 +79,11 @@ function draw3DTile(x, y, type, isHovered) {
     endShape(CLOSE);
 
     if (type === "water") {
-        drawWaterfall(x, y)
+        drawWaterfall(x, y);
+    }
+    if (type === "grass") {
+        randomSeed(x + y)
+        drawGrass()
     }
 
     pop();
