@@ -1,14 +1,5 @@
-let tileSize = 100;
-let tileHeight = 40; // for 3D depth
-let grid = [];
-let cols = 10;
-let rows = 10;
-
-let tileTypes = ["grass", "dry", "path", "water"];
-let hoveredTile = null;
-
 function setup() {
-    var canvas = createCanvas(1000, 800);
+    var canvas = createCanvas(1000, 700);
     canvas.parent('garden-container');
 
     angleMode(DEGREES);
@@ -18,13 +9,13 @@ function setup() {
     for (let x = 0; x < cols; x++) {
         grid[x] = [];
         for (let y = 0; y < rows; y++) {
-            grid[x][y] = random(tileTypes.slice(0, 2)); // only grass
+            grid[x][y] = weightedRandom(tileTypes, tileWeights);
         }
     }
 }
 
 function draw() {
-    translate(width / 2, 150);
+    translate(width / 2, 50);
     hoveredTile = getHoveredTile();
 
     for (let x = 0; x < cols; x++) {
@@ -70,7 +61,7 @@ function draw3DTile(x, y, type, isHovered) {
 
     // Draw top surface
     noStroke();
-    fill(isHovered ? color(255, 255, 150) : topColor);
+    fill(isHovered ? color(255, 255, 100) : topColor);
     beginShape();
     vertex(0, 0);
     vertex(tileSize / 2, tileSize / 4);
@@ -83,7 +74,10 @@ function draw3DTile(x, y, type, isHovered) {
     }
     if (type === "grass") {
         randomSeed(x + y)
-        drawGrass()
+        drawGrass();
+        if (random() > 0.9) {
+            drawTree();
+        }
     }
 
     pop();
@@ -91,8 +85,8 @@ function draw3DTile(x, y, type, isHovered) {
 
 function getColorForType(type) {
     switch (type) {
-        case "grass": return color(0, 154, 23);
-        case "dry": return color(0, 128, 19);
+        case "grass": return color(119, 179, 0);
+        case "dry": return color(215, 191, 83);
         case "path": return color(183, 194, 178);
         case "water": return color(31, 182, 237);
         default: return color(200);
@@ -103,12 +97,16 @@ function getColorForType(type) {
 function mousePressed() {
     if (hoveredTile) {
         let { x, y } = hoveredTile;
-        grid[x][y] = tileTypes[3];
+        let typeIndex = getTileFromAction()
+        if (typeIndex >= 0) {
+            grid[x][y] = tileTypes[typeIndex];
+        }
+        background(182, 211, 182);
         redraw();
     }
 }
 
-// Hover tracking
+// Hover tracking (to prevent unnessary draws)
 function mouseMoved() {
-    redraw(); // Only redraw when mouse moves to reduce unnecessary draws
+    redraw();
 }

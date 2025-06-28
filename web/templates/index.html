@@ -5,11 +5,34 @@
     <title>Blossim</title>
     <link rel="stylesheet" href="/static/index.css">
     <script src="https://cdn.jsdelivr.net/npm/p5@1.11.8/lib/p5.min.js"></script>
+    <script src="/static/js/user.js"></script>
 </head>
 
 <body>
-    <h1 id="title">Garden of {{ .Owner }}</h1>
+    <div id="canvas">
+        <h1 id="title">Garden of {{ .Owner }}</h1>
+        <p id="userAction"></p>
+    </div>
     <div id="garden-container"></div>
+    <div class="menu-bar">
+        <div class="dropdown">
+            <button class="dropbtn">Help</button>
+        </div>
+        <div class="dropdown">
+            <button class="dropbtn">Elements</button>
+            <div class="dropdown-content">
+                <button onclick="setUserAction('water')">Water</button>
+                <button onclick="setUserAction('grass')">Grass</button>
+                <button onclick="setUserAction('path')">Path</button>
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="dropbtn">Seeds</button>
+            <div class="dropdown-content">
+                <button>Pine</button>
+            </div>
+        </div>
+    </div>
 </body>
 
 <footer>

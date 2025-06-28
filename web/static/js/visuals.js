@@ -8,7 +8,7 @@ function getHoveredTile() {
 }
 
 function drawWaterfall(x, y) {
-    const iso = screenToIso(x + width / 2, y + 150);
+    const iso = screenToIso(x + width / 2, y + 50);
     const i = iso.x, j = iso.y;
 
     const belowMissing = j + 1 >= rows || !grid[i]?.[j + 1];
@@ -67,7 +67,6 @@ function drawWaterfall(x, y) {
 
 
 function drawGrass() {
-    console.log("drawing grass")
     var offsetY = 25;
     var padding = 25;
     for (let i = 0; i < 8; i++) {
@@ -76,9 +75,27 @@ function drawGrass() {
         var v = random(-maxV, maxV);
 
         var h = random(2, 6); // blade height
-        stroke(0, 128, 19, 90);
+        stroke(102, 153, 0, 90);
         strokeWeight(2);
         line(u, v + offsetY, u, v + offsetY - h);
     }
 }
+
+function drawTree() {
+
+    var c = (tileSize / 4) + random(1, 4)
+    // Draw trunk
+    stroke(100, 60, 30);
+    strokeWeight(4);
+    line(c, c, c, -10);
+
+    // Draw foliage (cone)
+    fill(0, 100, 50);
+    stroke(0, 100, 30);
+    strokeWeight(1);
+    triangle(c - 10, c - 20, c + 10, c - 20, c, c - 50); // simple triangle for tree
+
+    pop();
+}
+
 
